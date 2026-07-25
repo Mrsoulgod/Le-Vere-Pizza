@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Le' Vere Pizza — wood-fired, handmade pizza from a live-fire oven. Naples technique, neighborhood soul.">
+<title>Le' Vere Pizza — Wood-Fired &amp; Handmade</title>
+
+<!-- Fonts: Fraunces (display serif) + Work Sans (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   1. DESIGN TOKENS — swap the theme here
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  /* Palette: "wood-fired trattoria at night" */
+  --bg:          #1A1512;   /* deep espresso charcoal */
+  --bg-raised:   #211A15;   /* slightly lifted surface */
+  --bg-card:     #251E17;   /* card surface, warm brown-black */
+  --ember:       #E8734A;   /* glowing ember orange */
+  --ember-deep:  #D9600B;   /* burnt amber */
+  --cta:         #C1440E;   /* deep red-orange, CTAs only */
+  --cream:       #F5EDE4;   /* warm off-white text */
+  --cream-dim:   #B3A492;   /* secondary text, warm taupe */
+  --line:        rgba(245, 237, 228, 0.10);
+  --glow:        rgba(217, 96, 11, 0.22);
+
+  /* Type */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Work Sans", -apple-system, sans-serif;
+
+  /* Rhythm */
+  --radius: 18px;
+  --radius-sm: 12px;
+  --section-pad: clamp(4rem, 9vw, 7.5rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --header-h: 76px;
+}
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Subtle grain overlay across the whole page — handcrafted warmth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.30;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.06'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+/* Accessible, visible focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--cta); color: var(--cream); }
+
+/* ============================================================
+   3. TYPE & SHARED PIECES
+   ============================================================ */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.wrap {
+  width: min(1160px, 100% - var(--gutter) * 2);
+  margin-inline: auto;
+}
+
+section { padding-block: var(--section-pad); }
+
+/* Small orange eyebrow above each section title */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 1.1rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--ember-deep);
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 4.2vw, 3rem);
+  max-width: 22ch;
+  margin-bottom: 0.9rem;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--ember);
+}
+
+.section-intro {
+  color: var(--cream-dim);
+  max-width: 56ch;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.85rem 1.7rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.btn-primary {
+  background: var(--cta);
+  color: var(--cream);
+  box-shadow: 0 6px 24px -8px rgba(193, 68, 14, 0.55);
+}
+.btn-primary:hover {
+  background: var(--ember-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -8px rgba(217, 96, 11, 0.6);
+}
+.btn-ghost {
+  border-color: rgba(245, 237, 228, 0.25);
+  color: var(--cream);
+}
+.btn-ghost:hover {
+  border-color: var(--ember);
+  color: var(--ember);
+  transform: translateY(-2px);
+}
+
+/* Scroll-reveal (JS adds .visible via IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition-delay: var(--reveal-delay, 0s);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ============================================================
+   4. HEADER / NAV
+   ============================================================ */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+  padding-block: 18px;
+}
+.site-header.scrolled {
+  padding-block: 8px;
+  background: rgba(26, 21, 18, 0.82);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--line), 0 12px 32px -18px rgba(0,0,0,0.8);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.logo em { font-style: italic; color: var(--ember); }
+.logo small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  margin-top: 0.3rem;
+}
+
+.main-nav ul {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2.5vw, 2.2rem);
+  list-style: none;
+}
+.main-nav a:not(.btn) {
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--cream-dim);
+  padding: 0.4rem 0.1rem;
+  position: relative;
+  transition: color 0.25s ease;
+}
+.main-nav a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: var(--ember);
+  transition: right 0.3s ease;
+}
+.main-nav a:not(.btn):hover { color: var(--cream); }
+.main-nav a:not(.btn):hover::after { right: 0; }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--cream);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.nav-toggle span + span { margin-top: 5px; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============================================================
+   5. HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(var(--header-h) + 3rem) 4rem;
+  overflow: hidden;
+}
+
+/* Oven-glow: layered radial gradients that slowly "breathe" */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 55% 45% at 78% 72%, var(--glow), transparent 65%),
+    radial-gradient(ellipse 40% 35% at 85% 90%, rgba(193, 68, 14, 0.18), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 15% 15%, rgba(232, 115, 74, 0.07), transparent 60%);
+  animation: emberBreathe 7s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes emberBreathe {
+  from { opacity: 0.75; transform: scale(1); }
+  to   { opacity: 1;    transform: scale(1.04); }
+}
+
+.hero-grid {
+  position: relative;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+  align-items: center;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 1.4rem;
+}
+.hero-kicker .flame { font-size: 1rem; letter-spacing: 0; }
+
+.hero h1 {
+  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
+  font-weight: 500;
+  margin-bottom: 1.4rem;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--ember);
+}
+
+.hero-sub {
+  color: var(--cream-dim);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  max-width: 46ch;
+  margin-bottom: 2.2rem;
+}
+
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+
+.hero-fact {
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+  color: var(--cream-dim);
+  font-size: 0.9rem;
+}
+.hero-fact strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--cream);
+}
+.hero-fact strong span { color: var(--ember); }
+
+.hero-figure {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+}
+.hero-figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+/* warm gradient overlay on the hero image */
+.hero-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(200deg, rgba(217, 96, 11, 0.28) 0%, transparent 45%, rgba(26, 21, 18, 0.55) 100%);
+}
+.hero-figure figcaption {
+  position: absolute;
+  z-index: 2;
+  left: 1.2rem;
+  bottom: 1.1rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--cream);
+  opacity: 0.9;
+}
+
+/* ============================================================
+   6. ABOUT
+   ============================================================ */
+.about { background: var(--bg-raised); border-block: 1px solid var(--line); }
+
+.about-grid {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.about-figure {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.about-figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.about-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, transparent 55%, rgba(217, 96, 11, 0.2));
+}
+
+.about-copy p { color: var(--cream-dim); margin-bottom: 1.15rem; }
+.about-copy p strong { color: var(--cream); font-weight: 500; }
+
+.about-sign {
+  margin-top: 1.8rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--ember);
+}
+.about-sign small {
+  display: block;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  margin-top: 0.35rem;
+}
+
+/* ============================================================
+   7. MENU
+   ============================================================ */
+.menu-category { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+.menu-category:last-child { margin-bottom: 0; }
+
+.menu-category-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  margin-bottom: 1.4rem;
+}
+.menu-category-head h3 {
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--cream);
+  white-space: nowrap;
+}
+.menu-category-head::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  transform: translateY(-4px);
+}
+.menu-category-head .count {
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  white-space: nowrap;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+.menu-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1.35rem 1.45rem 1.25rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.menu-card:hover,
+.menu-card:focus-within {
+  transform: translateY(-5px);
+  border-color: rgba(232, 115, 74, 0.45);
+  box-shadow: 0 18px 40px -22px rgba(217, 96, 11, 0.35);
+}
+
+/* Signature detail: dotted price leaders, like a paper menu */
+.menu-item-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-bottom: 0.45rem;
+}
+.menu-item-row h4 {
+  font-family: var(--font-display);
+  font-size: 1.14rem;
+  font-weight: 500;
+  color: var(--cream);
+}
+.menu-item-row .dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(245, 237, 228, 0.28);
+  transform: translateY(-4px);
+}
+.menu-item-row .price {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ember);
+}
+.menu-card p {
+  font-size: 0.92rem;
+  color: var(--cream-dim);
+  line-height: 1.6;
+}
+.menu-card .tag {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ember);
+  border: 1px solid rgba(232, 115, 74, 0.35);
+  border-radius: 999px;
+  padding: 0.22rem 0.65rem;
+}
+
+.menu-note {
+  margin-top: 2.4rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--cream-dim);
+  font-size: 1.02rem;
+}
+.menu-note span { color: var(--ember); }
+
+/* ============================================================
+   8. GALLERY
+   ============================================================ */
+.gallery { background: var(--bg-raised); border-block: 1px solid var(--line); }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26, 21, 18, 0.55), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.gallery-item .gallery-label {
+  position: absolute;
+  z-index: 2;
+  left: 1rem;
+  bottom: 0.85rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--cream);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.gallery-item:hover img, .gallery-item:focus-visible img { transform: scale(1.07); }
+.gallery-item:hover::after, .gallery-item:focus-visible::after { opacity: 1; }
+.gallery-item:hover .gallery-label, .gallery-item:focus-visible .gallery-label {
+  opacity: 1; transform: none;
+}
+
+/* ============================================================
+   9. TESTIMONIALS
+   ============================================================ */
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+}
+.testimonial-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.8rem 1.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.testimonial-card:hover { transform: translateY(-5px); border-color: rgba(232, 115, 74, 0.4); }
+
+.stars {
+  color: var(--ember);
+  letter-spacing: 0.22em;
+  font-size: 0.85rem;
+}
+.testimonial-card blockquote {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--cream);
+}
+.testimonial-card figcaption {
+  margin-top: auto;
+  font-size: 0.85rem;
+  color: var(--cream-dim);
+}
+.testimonial-card figcaption strong {
+  display: block;
+  font-weight: 500;
+  color: var(--cream);
+  font-size: 0.95rem;
+}
+
+/* ============================================================
+   10. ORDER CTA BAND
+   ============================================================ */
+.order-band {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-raised);
+  border-block: 1px solid var(--line);
+  text-align: center;
+}
+.order-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 90% at 50% 110%, var(--glow), transparent 70%);
+  pointer-events: none;
+}
+.order-band .wrap { position: relative; }
+.order-band h2 {
+  font-size: clamp(1.9rem, 4.5vw, 3.1rem);
+  margin-bottom: 0.9rem;
+}
+.order-band h2 em { font-style: italic; color: var(--ember); }
+.order-band p {
+  color: var(--cream-dim);
+  max-width: 46ch;
+  margin: 0 auto 2rem;
+}
+.order-band .hero-ctas { justify-content: center; }
+.order-phone {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--cream);
+}
+.order-phone:hover { color: var(--ember); }
+
+/* ============================================================
+   11. LOCATION & HOURS
+   ============================================================ */
+.location-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.map-placeholder {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.map-placeholder img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
+.map-placeholder .map-pin {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.4rem;
+  background: rgba(26, 21, 18, 0.45);
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--cream);
+}
+.map-placeholder .map-pin .pin-dot {
+  width: 14px; height: 14px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--ember);
+  box-shadow: 0 0 0 8px rgba(232, 115, 74, 0.25), 0 0 24px rgba(232, 115, 74, 0.8);
+}
+
+.info-block { margin-bottom: 1.9rem; }
+.info-block h3 {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ember);
+  margin-bottom: 0.6rem;
+}
+.info-block p, .info-block a { color: var(--cream-dim); }
+.info-block a:hover { color: var(--ember); }
+
+.hours-table { width: 100%; border-collapse: collapse; }
+.hours-table td {
+  padding: 0.55rem 0;
+  border-bottom: 1px dotted rgba(245, 237, 228, 0.16);
+  color: var(--cream-dim);
+  font-size: 0.95rem;
+}
+.hours-table td:last-child { text-align: right; color: var(--cream); }
+.hours-table tr.today td { color: var(--ember); font-weight: 500; }
+
+/* ============================================================
+   12. FOOTER
+   ============================================================ */
+.site-footer {
+  background: #14100D;
+  border-top: 1px solid var(--line);
+  padding: clamp(3rem, 6vw, 4.5rem) 0 1.8rem;
+}
+.footer-grid {
+  display: grid;
+  gap: 2.4rem;
+  margin-bottom: 3rem;
+}
+.footer-brand p {
+  color: var(--cream-dim);
+  font-size: 0.92rem;
+  max-width: 32ch;
+  margin-top: 0.9rem;
+}
+.footer-col h3 {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 1rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 0.55rem; }
+.footer-col a {
+  font-size: 0.92rem;
+  color: var(--cream-dim);
+  transition: color 0.25s ease;
+}
+.footer-col a:hover { color: var(--ember); }
+
+.social-row { display: flex; gap: 0.7rem; margin-top: 1.2rem; }
+.social-row a {
+  display: grid;
+  place-content: center;
+  width: 38px; height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--cream-dim);
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.social-row a:hover { border-color: var(--ember); color: var(--ember); transform: translateY(-2px); }
+.social-row svg { width: 16px; height: 16px; fill: currentColor; }
+
+.newsletter-form { display: flex; gap: 0.6rem; margin-top: 0.4rem; }
+.newsletter-form input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.7rem 1.1rem;
+  transition: border-color 0.25s ease;
+}
+.newsletter-form input::placeholder { color: var(--cream-dim); }
+.newsletter-form input:focus { outline: none; border-color: var(--ember); }
+.newsletter-form button { padding: 0.7rem 1.3rem; font-size: 0.88rem; }
+.newsletter-msg {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--ember);
+  min-height: 1.2em;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--line);
+  padding-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.82rem;
+  color: var(--cream-dim);
+}
+.footer-bottom em { color: var(--ember); font-style: italic; }
+
+/* ============================================================
+   13. RESPONSIVE — mobile-first breakpoints
+   ============================================================ */
+
+/* ≥ 480px */
+@media (min-width: 480px) {
+  .menu-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ≥ 768px */
+@media (min-width: 768px) {
+  .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+  .about-grid { grid-template-columns: 0.95fr 1.05fr; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  .testimonial-grid { grid-template-columns: repeat(3, 1fr); }
+  .location-grid { grid-template-columns: 1.15fr 0.85fr; }
+}
+
+/* ≥ 1024px */
+@media (min-width: 1024px) {
+  .menu-grid { grid-template-columns: repeat(4, 1fr); }
+  .footer-grid { grid-template-columns: 1.4fr 0.8fr 0.8fr 1.2fr; }
+}
+
+/* ≤ 767px: collapse nav into a panel */
+@media (max-width: 767px) {
+  .nav-toggle { display: block; }
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(26, 21, 18, 0.97);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+    padding: 1.2rem var(--gutter) 1.6rem;
+    display: none;
+  }
+  .main-nav.open { display: block; }
+  .main-nav ul { flex-direction: column; align-items: flex-start; gap: 1.1rem; }
+  .main-nav .btn { margin-top: 0.4rem; }
+}
+</style>
+</head>
+
+<body>
+<!-- ============================================================
+     HEADER — sticky, blurs & shrinks on scroll
+     ============================================================ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="logo" href="#top" aria-label="Le' Vere Pizza — back to top">
+      Le'&nbsp;<em>Vere</em>
+      <small>Pizza &middot; Forno a Legna</small>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#location">Location</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a class="btn btn-primary" href="#order">Order Now</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================================================
+       HERO — oven-glow gradient, headline, primary CTA
+       ============================================================ -->
+  <section class="hero" aria-label="Welcome">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="hero-kicker"><span class="flame" aria-hidden="true">&#10022;</span> Forno a legna &middot; est. 1987</p>
+        <h1>Wood-fired. Handmade. <em>Unforgettable.</em></h1>
+        <p class="hero-sub">
+          Dough that rests for 48 hours. A fire that never quite goes out.
+          Every pizza leaves our oven blistered, leopard-spotted, and gone
+          in about four minutes flat.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#order">Order Now</a>
+          <a class="btn btn-ghost" href="#menu">See the Menu</a>
+        </div>
+        <div class="hero-fact" role="list">
+          <div role="listitem"><strong>485<span>&deg;C</span></strong> oven, oak &amp; olive wood</div>
+          <div role="listitem"><strong>48<span>h</span></strong> slow-fermented dough</div>
+          <div role="listitem"><strong>90<span>s</span></strong> from peel to plate</div>
+        </div>
+      </div>
+
+      <figure class="hero-figure">
+        <img src="https://placehold.co/800x1000/241D17/E8734A?text=Margherita+fresh%0Afrom+the+oven"
+             alt="A wood-fired margherita pizza with charred, leopard-spotted crust, fresh from the oven"
+             width="800" height="1000" fetchpriority="high">
+        <figcaption>Tonight's first bake, straight off the peel</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT / STORY — 2-column, tradition & authenticity
+       ============================================================ -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <figure class="about-figure reveal">
+        <img src="https://placehold.co/800x600/211A15/D9600B?text=Nonna+Vera+at%0Athe+oven%2C+1987"
+             alt="Black-and-white photograph of the founder shaping dough beside the original wood-fired oven"
+             width="800" height="600" loading="lazy">
+      </figure>
+
+      <div class="about-copy reveal" style="--reveal-delay: 0.12s">
+        <p class="eyebrow">Our story</p>
+        <h2 class="section-title">Named for Vera. Run by <em>fire.</em></h2>
+        <p>
+          <strong>It started with a stubborn woman and a stubborn oven.</strong>
+          Vera brought her mother's dough recipe from Campania in a shoebox,
+          and refused to change a word of it. Same flour, same long rest,
+          same rule: if the fire isn't right, we don't open.
+        </p>
+        <p>
+          Forty years on, her grandchildren tend the same flames. The oven
+          gets lit at noon, the dough is shaped by hand — never rolled — and
+          the tomatoes still arrive whole, crushed to order each morning.
+        </p>
+        <p>
+          We're not chasing trends. We're keeping a promise.
+        </p>
+        <p class="about-sign">
+          "Il fuoco non mente." — the fire doesn't lie
+          <small>The Vera family, third generation</small>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MENU — categorized card grids with dotted price leaders
+       ============================================================ -->
+  <section id="menu" aria-label="Menu">
+    <div class="wrap">
+      <p class="eyebrow reveal">The menu</p>
+      <h2 class="section-title reveal">Small menu. <em>Serious</em> fire.</h2>
+      <p class="section-intro reveal">
+        Everything below passes through the same oven. We'd rather do
+        sixteen things over live fire than sixty things without it.
+      </p>
+
+      <!-- Signature Pizzas -->
+      <div class="menu-category">
+        <div class="menu-category-head reveal">
+          <h3>Signature Pizzas</h3>
+          <span class="count">House originals</span>
+        </div>
+        <div class="menu-grid">
+          <article class="menu-card reveal">
+            <div class="menu-item-row">
+              <h4>L'Affumicata</h4><span class="dots"></span><span class="price">$19</span>
+            </div>
+            <p>Smoked scamorza, slow-caramelized onions, and wild oregano — the pizza that tastes the way the dining room smells.</p>
+            <span class="tag">Most loved</span>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.08s">
+            <div class="menu-item-row">
+              <h4>Diavola di Casa</h4><span class="dots"></span><span class="price">$18</span>
+            </div>
+            <p>Spicy soppressata that crisps at the edges, a thread of hot honey, and enough chili to make you order another drink.</p>
+            <span class="tag">Spicy</span>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.16s">
+            <div class="menu-item-row">
+              <h4>Fungo e Fuoco</h4><span class="dots"></span><span class="price">$19</span>
+            </div>
+            <p>Fire-roasted mushrooms, melting taleggio, and thyme — earthy, smoky, and unapologetically rich.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.24s">
+            <div class="menu-item-row">
+              <h4>La Verde</h4><span class="dots"></span><span class="price">$17</span>
+            </div>
+            <p>Pistachio pesto, cold stracciatella laid on after the bake, and a bright rasp of lemon zest.</p>
+            <span class="tag">Vegetarian</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Classics -->
+      <div class="menu-category">
+        <div class="menu-category-head reveal">
+          <h3>Classics</h3>
+          <span class="count">The old ways</span>
+        </div>
+        <div class="menu-grid">
+          <article class="menu-card reveal">
+            <div class="menu-item-row">
+              <h4>Margherita D.O.P.</h4><span class="dots"></span><span class="price">$14</span>
+            </div>
+            <p>San Marzano tomatoes, fior di latte, basil torn at the last second. Judged by Naples rules; passes them.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.08s">
+            <div class="menu-item-row">
+              <h4>Marinara</h4><span class="dots"></span><span class="price">$12</span>
+            </div>
+            <p>No cheese, nowhere to hide: tomato, garlic, oregano, and olive oil on our best crust. Vera's favorite.</p>
+            <span class="tag">Vegan</span>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.16s">
+            <div class="menu-item-row">
+              <h4>Quattro Formaggi</h4><span class="dots"></span><span class="price">$16</span>
+            </div>
+            <p>Fior di latte, gorgonzola, pecorino, and parmigiano, blistered together until the edges catch.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.24s">
+            <div class="menu-item-row">
+              <h4>Capricciosa</h4><span class="dots"></span><span class="price">$17</span>
+            </div>
+            <p>Prosciutto cotto, artichokes, olives, and mushrooms — the whole pantry, in its proper proportions.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Sides -->
+      <div class="menu-category">
+        <div class="menu-category-head reveal">
+          <h3>From the Fire &amp; Garden</h3>
+          <span class="count">Sides</span>
+        </div>
+        <div class="menu-grid">
+          <article class="menu-card reveal">
+            <div class="menu-item-row">
+              <h4>Garlic Knots al Forno</h4><span class="dots"></span><span class="price">$7</span>
+            </div>
+            <p>Yesterday's dough, today's butter, a snowfall of pecorino. Six to a plate; never enough.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.08s">
+            <div class="menu-item-row">
+              <h4>Burrata &amp; Charred Tomatoes</h4><span class="dots"></span><span class="price">$11</span>
+            </div>
+            <p>Cold cream against warm, oven-scorched tomatoes, with grilled bread to take care of what's left.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.16s">
+            <div class="menu-item-row">
+              <h4>Insalata della Casa</h4><span class="dots"></span><span class="price">$9</span>
+            </div>
+            <p>Bitter leaves, fennel, and orange with a sharp vinaigrette — the argument your pizza needs.</p>
+            <span class="tag">Vegan</span>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.24s">
+            <div class="menu-item-row">
+              <h4>Polenta Fries</h4><span class="dots"></span><span class="price">$8</span>
+            </div>
+            <p>Crisp outside, molten inside, with smoked-paprika aioli. Ordered "for the table," finished by one person.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Drinks -->
+      <div class="menu-category">
+        <div class="menu-category-head reveal">
+          <h3>To Drink</h3>
+          <span class="count">Drinks</span>
+        </div>
+        <div class="menu-grid">
+          <article class="menu-card reveal">
+            <div class="menu-item-row">
+              <h4>House Red, by the Glass</h4><span class="dots"></span><span class="price">$9</span>
+            </div>
+            <p>A Campanian aglianico chosen for one job: standing up to char and tomato.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.08s">
+            <div class="menu-item-row">
+              <h4>Birra Moretti</h4><span class="dots"></span><span class="price">$6</span>
+            </div>
+            <p>Cold, honest lager. The correct answer to a Diavola.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.16s">
+            <div class="menu-item-row">
+              <h4>Chinotto &amp; Aranciata</h4><span class="dots"></span><span class="price">$4</span>
+            </div>
+            <p>Bittersweet Italian sodas over ice — the grown-up alternative to cola.</p>
+          </article>
+          <article class="menu-card reveal" style="--reveal-delay: 0.24s">
+            <div class="menu-item-row">
+              <h4>Espresso / Affogato</h4><span class="dots"></span><span class="price">$3 / $6</span>
+            </div>
+            <p>Pulled short and dark; add a scoop of fior di latte gelato and call it dessert.</p>
+          </article>
+        </div>
+      </div>
+
+      <p class="menu-note reveal">Gluten-free dough available for any pizza <span>+$3</span> &middot; tell us about allergies, we take them seriously.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       GALLERY — 6-image grid, hover zoom
+       ============================================================ -->
+  <section class="gallery" id="gallery">
+    <div class="wrap">
+      <p class="eyebrow reveal">The room, the fire, the food</p>
+      <h2 class="section-title reveal">A look <em>inside.</em></h2>
+      <p class="section-intro reveal">Shot on slow nights and busy ones — mostly busy ones.</p>
+
+      <div class="gallery-grid">
+        <figure class="gallery-item reveal" tabindex="0">
+          <img src="https://placehold.co/700x700/251E17/E8734A?text=The+oven%2C%0Amid-service" alt="The wood-fired oven glowing during evening service" width="700" height="700" loading="lazy">
+          <figcaption class="gallery-label">The oven, mid-service</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" style="--reveal-delay: 0.07s" tabindex="0">
+          <img src="https://placehold.co/700x700/211A15/D9600B?text=Hands+in%0Athe+dough" alt="Hands stretching pizza dough on a flour-dusted marble counter" width="700" height="700" loading="lazy">
+          <figcaption class="gallery-label">Hands in the dough</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" style="--reveal-delay: 0.14s" tabindex="0">
+          <img src="https://placehold.co/700x700/251E17/F5EDE4?text=Diavola%2C%0Ajust+cut" alt="A freshly cut Diavola pizza with curled soppressata and hot honey" width="700" height="700" loading="lazy">
+          <figcaption class="gallery-label">Diavola, just cut</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" tabindex="0">
+          <img src="https://placehold.co/700x700/211A15/E8734A?text=Friday+night%2C%0Atable+six" alt="Friends sharing pizzas at a candlelit table on a Friday night" width="700" height="700" loading="lazy">
+          <figcaption class="gallery-label">Friday night, table six</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" style="--reveal-delay: 0.07s" tabindex="0">
+          <img src="https://placehold.co/700x700/251E17/D9600B?text=Oak+%26+olive%0Awood+stack" alt="Split oak and olive wood stacked beside the oven" width="700" height="700" loading="lazy">
+          <figcaption class="gallery-label">Oak &amp; olive, tomorrow's fire</figcaption>
+        </figure>
+        <figure class="gallery-item reveal" style="--reveal-delay: 0.14s" tabindex="0">
+          <img src="https://placehold.co/700x700/211A15/F5EDE4?text=Burrata+%26%0Acharred+tomato" alt="Burrata with charred tomatoes and grilled bread on a terracotta plate" width="700" height="700" loading="lazy">
+          <figcaption class="gallery-label">Burrata &amp; charred tomato</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TESTIMONIALS — static 3-card grid with star ratings
+       ============================================================ -->
+  <section id="testimonials" aria-label="What guests say">
+    <div class="wrap">
+      <p class="eyebrow reveal">Word of mouth</p>
+      <h2 class="section-title reveal">Don't take <em>our</em> word for it.</h2>
+
+      <div class="testimonial-grid">
+        <figure class="testimonial-card reveal">
+          <p class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+          <blockquote>
+            "I've eaten pizza in Naples. I'm not saying this is better —
+            I'm saying I stopped talking for four minutes, and my wife
+            checked if I was okay."
+          </blockquote>
+          <figcaption><strong>Marco T.</strong>Regular since 2019</figcaption>
+        </figure>
+
+        <figure class="testimonial-card reveal" style="--reveal-delay: 0.1s">
+          <p class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+          <blockquote>
+            "The crust has actual flavor — not just a handle for toppings.
+            We drive forty minutes each way and have never once discussed
+            going anywhere else."
+          </blockquote>
+          <figcaption><strong>Priya &amp; Dan</strong>The forty-minute regulars</figcaption>
+        </figure>
+
+        <figure class="testimonial-card reveal" style="--reveal-delay: 0.2s">
+          <p class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+          <blockquote>
+            "Took my nonna, who does not compliment restaurants. She asked
+            who made the marinara, then went quiet. That's the review."
+          </blockquote>
+          <figcaption><strong>Giulia R.</strong>Brought the toughest critic</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ORDER CTA BAND
+       ============================================================ -->
+  <section class="order-band" id="order">
+    <div class="wrap">
+      <p class="eyebrow reveal" style="justify-content: center;">Takeaway &amp; tables</p>
+      <h2 class="reveal">The fire's already <em>lit.</em></h2>
+      <p class="reveal">Order ahead for pickup, or call for tonight's table. Pizzas travel best in the first twenty minutes — we box them accordingly.</p>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-primary" href="tel:+15551234567">Call to Order — (555) 123-4567</a>
+        <a class="btn btn-ghost" href="#location">Find Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LOCATION & HOURS — map placeholder, address, hours table
+       ============================================================ -->
+  <section id="location" aria-label="Location and hours">
+    <div class="wrap">
+      <p class="eyebrow reveal">Find the fire</p>
+      <h2 class="section-title reveal">Location &amp; <em>hours.</em></h2>
+
+      <div class="location-grid">
+        <div class="map-placeholder reveal">
+          <img src="https://placehold.co/900x620/211A15/B3A492?text=Map+embed+goes+here" alt="Street map placeholder showing the location of Le' Vere Pizza" width="900" height="620" loading="lazy">
+          <div class="map-pin">
+            <span class="pin-dot" aria-hidden="true"></span>
+            <span>You'll smell it before you see it.</span>
+          </div>
+        </div>
+
+        <div class="reveal" style="--reveal-delay: 0.12s">
+          <div class="info-block">
+            <h3>Address</h3>
+            <p>14 Ember Lane, Old Mill Quarter<br>Portsmouth Row, PR2 4VE</p>
+          </div>
+
+          <div class="info-block">
+            <h3>Hours</h3>
+            <table class="hours-table">
+              <tbody>
+                <tr data-day="1"><td>Monday</td><td>Closed — the oven rests</td></tr>
+                <tr data-day="2"><td>Tuesday</td><td>5:00 pm – 10:00 pm</td></tr>
+                <tr data-day="3"><td>Wednesday</td><td>5:00 pm – 10:00 pm</td></tr>
+                <tr data-day="4"><td>Thursday</td><td>5:00 pm – 10:00 pm</td></tr>
+                <tr data-day="5"><td>Friday</td><td>12:00 pm – 11:00 pm</td></tr>
+                <tr data-day="6"><td>Saturday</td><td>12:00 pm – 11:00 pm</td></tr>
+                <tr data-day="0"><td>Sunday</td><td>12:00 pm – 9:00 pm</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-block">
+            <h3>Contact</h3>
+            <p>
+              <a href="tel:+15551234567">(555) 123-4567</a><br>
+              <a href="mailto:ciao@leverepizza.com">ciao@leverepizza.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================
+     FOOTER — brand, links, socials, newsletter
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="#top">
+          Le'&nbsp;<em>Vere</em>
+          <small>Pizza &middot; Forno a Legna</small>
+        </a>
+        <p>Wood-fired pizza from a family recipe that hasn't changed since 1987 — because it hasn't needed to.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Le' Vere Pizza on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.07 1.2.05 1.8.24 2.2.4.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.35 1.05.4 2.23.06 1.26.07 1.64.07 4.82s0 3.56-.07 4.82c-.05 1.18-.24 1.8-.4 2.22a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.17-1.05.36-2.23.41-1.26.06-1.63.07-4.81.07s-3.56-.01-4.82-.07c-1.18-.05-1.8-.24-2.22-.4a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.39c-.17-.42-.36-1.04-.41-2.22C2.2 15.56 2.2 15.18 2.2 12s0-3.56.07-4.82c.05-1.18.24-1.8.4-2.22.22-.57.48-.97.9-1.39.42-.42.82-.68 1.39-.9.42-.16 1.04-.35 2.22-.4C8.44 2.2 8.82 2.2 12 2.2m0 1.76c-3.13 0-3.5.01-4.74.07-1.09.05-1.68.23-2.07.38-.52.2-.9.45-1.28.84-.4.39-.64.76-.84 1.28-.15.4-.33.98-.38 2.07-.06 1.24-.07 1.6-.07 4.74s0 3.5.07 4.74c.05 1.09.23 1.68.38 2.07.2.52.45.9.84 1.28.38.39.76.64 1.28.84.4.15.98.33 2.07.38 1.23.06 1.6.07 4.74.07s3.5-.01 4.74-.07c1.09-.05 1.67-.23 2.07-.38.52-.2.9-.45 1.28-.84.39-.38.63-.76.84-1.28.15-.4.33-.98.38-2.07.06-1.24.07-1.6.07-4.74s-.01-3.5-.07-4.74c-.05-1.09-.23-1.67-.38-2.07-.2-.52-.45-.9-.84-1.28a3.44 3.44 0 0 0-1.28-.84c-.4-.15-.98-.33-2.07-.38-1.24-.06-1.6-.07-4.74-.07M12 6.87a5.13 5.13 0 1 1 0 10.26 5.13 5.13 0 0 1 0-10.26m0 8.46a3.33 3.33 0 1 0 0-6.66 3.33 3.33 0 0 0 0 6.66m6.54-8.67a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0"/></svg>
+          </a>
+          <a href="#" aria-label="Le' Vere Pizza on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.5h-2.8V24C19.61 23.1 24 18.1 24 12.07"/></svg>
+          </a>
+          <a href="#" aria-label="Le' Vere Pizza on TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="footer-col" aria-label="Footer — explore">
+        <h3>Explore</h3>
+        <ul>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#location">Location &amp; Hours</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Footer — visit">
+        <h3>Visit</h3>
+        <ul>
+          <li><a href="#order">Order Pickup</a></li>
+          <li><a href="tel:+15551234567">Book a Table</a></li>
+          <li><a href="mailto:ciao@leverepizza.com">Private Events</a></li>
+          <li><a href="mailto:ciao@leverepizza.com">Say Hello</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h3>From the Oven, Monthly</h3>
+        <p style="color: var(--cream-dim); font-size: 0.9rem; margin-bottom: 0.9rem;">One email a month: new pies, oven nights, and the occasional dough secret.</p>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <label for="newsletterEmail" class="sr-only" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Email address</label>
+          <input type="email" id="newsletterEmail" name="email" placeholder="your@email.com" required autocomplete="email">
+          <button class="btn btn-primary" type="submit">Join</button>
+        </form>
+        <p class="newsletter-msg" id="newsletterMsg" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="year">2026</span> Le' Vere Pizza. All rights reserved.</p>
+      <p>Fatto a mano, <em>cotto a legna.</em></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   1. STICKY HEADER — blur + shrink after scrolling past 24px
+   ============================================================ */
+(function () {
+  const header = document.getElementById("siteHeader");
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        header.classList.toggle("scrolled", window.scrollY > 24);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ============================================================
+   2. MOBILE NAV TOGGLE — closes on link click / Escape
+   ============================================================ */
+(function () {
+  const toggle = document.getElementById("navToggle");
+  const nav = document.getElementById("mainNav");
+
+  function setOpen(open) {
+    toggle.setAttribute("aria-expanded", String(open));
+    nav.classList.toggle("open", open);
+  }
+  toggle.addEventListener("click", function () {
+    setOpen(toggle.getAttribute("aria-expanded") !== "true");
+  });
+  nav.addEventListener("click", function (e) {
+    if (e.target.closest("a")) setOpen(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setOpen(false);
+  });
+})();
+
+/* ============================================================
+   3. SCROLL-REVEAL — IntersectionObserver, fade + translate-up
+   ============================================================ */
+(function () {
+  const items = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("visible"); });
+    return;
+  }
+  const io = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+  items.forEach(function (el) { io.observe(el); });
+})();
+
+/* ============================================================
+   4. HOURS TABLE — highlight today's row
+   ============================================================ */
+(function () {
+  const today = String(new Date().getDay()); // 0 = Sunday
+  const row = document.querySelector('.hours-table tr[data-day="' + today + '"]');
+  if (row) row.classList.add("today");
+})();
+
+/* ============================================================
+   5. NEWSLETTER — friendly inline confirmation (no backend yet)
+   ============================================================ */
+(function () {
+  const form = document.getElementById("newsletterForm");
+  const input = document.getElementById("newsletterEmail");
+  const msg = document.getElementById("newsletterMsg");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const value = input.value.trim();
+    if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      msg.textContent = "That email doesn't look quite right — mind checking it?";
+      return;
+    }
+    msg.textContent = "Benvenuto! You're on the list — first email arrives with next month's bake.";
+    form.reset();
+  });
+})();
+
+/* ============================================================
+   6. FOOTER YEAR — keep the copyright current
+   ============================================================ */
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserve a Table — Le' Vere Pizza</title>
+  <meta name="description" content="Reserve a table at Le' Vere Pizza. Choose your date, time, and number of guests.">
+  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    /* ---------- reserve page specific style ---------- */
+    .reserve-header {
+      padding: 10rem 6vw 4rem;
+      text-align: center;
+      background: linear-gradient(to bottom, rgba(10,8,7,.95), var(--char));
+    }
+    .reserve-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+      align-items: start;
+      padding-bottom: 6rem;
+    }
+    .reserve-copy p {
+      color: var(--ash);
+      max-width: 48ch;
+      margin-bottom: 1.6rem;
+    }
+    .hours {
+      list-style: none;
+      margin-top: 2rem;
+    }
+    .hours li {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: .7rem 0;
+      border-bottom: 1px solid rgba(237,227,210,.07);
+      font-size: .85rem;
+      color: var(--ash);
+    }
+    .hours li span:first-child {
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-size: .7rem;
+    }
+    .hours li span:last-child {
+      color: var(--bone);
+    }
+
+    form {
+      background: var(--soot);
+      border: 1px solid rgba(237,227,210,.07);
+      padding: 2.6rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+      border-radius: 4px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .field.full {
+      grid-column: 1/-1;
+    }
+    label {
+      font-size: .64rem;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    input, select {
+      background: var(--char);
+      border: 1px solid rgba(237,227,210,.12);
+      color: var(--bone);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: .95rem;
+      padding: .85rem 1rem;
+      transition: border-color .3s ease;
+      color-scheme: dark;
+      border-radius: 2px;
+    }
+    input:hover, select:hover {
+      border-color: rgba(233,147,47,.4);
+    }
+    form .btn {
+      grid-column: 1/-1;
+      border: 1px solid var(--ember);
+      background: var(--ember);
+      color: var(--char);
+      margin-top: .4rem;
+    }
+    form .btn:hover,
+    form .btn:focus-visible {
+      background: transparent;
+      color: var(--ember);
+    }
+    .form-note {
+      grid-column: 1/-1;
+      font-size: .78rem;
+      color: var(--ash);
+      text-align: center;
+    }
+    .form-done {
+      grid-column: 1/-1;
+      display: none;
+      text-align: center;
+      font-family: var(--serif-voice);
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--ember);
+    }
+    form.sent .form-done {
+      display: block;
+    }
+    form.sent .btn {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .reserve-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      form {
+        grid-template-columns: 1fr;
+        padding: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bar bar--top"></div>
+  <div class="bar bar--bottom"></div>
+
+  <nav id="nav" aria-label="Main">
+    <a class="nav-brand" href="index.html">LE<em>'</em>&nbsp;VERE</a>
+    <button class="nav-toggle" aria-label="Toggle Navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="story.html">Our Story</a></li>
+      <li><a href="reserve.html" class="active">Reserve</a></li>
+    </ul>
+    <a class="nav-cta" href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer">Order Online</a>
+  </nav>
+
+  <header class="reserve-header">
+    <div class="scene-head">
+      <p class="scene-label">Reservations</p>
+      <h1 class="scene-title">Book a <i>Table</i></h1>
+    </div>
+  </header>
+
+  <section style="padding: 2rem 6vw;">
+    <div class="reserve-grid">
+      <div class="reserve-copy reveal">
+        <p>Thirty-four seats, one oven, and a room that runs on firelight. Tables are held for fifteen minutes — after that, the dough decides.</p>
+        <p>For parties of seven or more, or for the chef's counter beside the oven, call us directly.</p>
+        <ul class="hours">
+          <li><span>Tue — Thu</span><span>6:00 pm — 11:00 pm</span></li>
+          <li><span>Fri — Sat</span><span>6:00 pm — 12:30 am</span></li>
+          <li><span>Sunday</span><span>5:00 pm — 10:30 pm</span></li>
+          <li><span>Monday</span><span>The oven rests</span></li>
+        </ul>
+      </div>
+
+      <form id="bookForm" class="reveal" data-delay="1" novalidate>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="f-date">Date</label>
+          <input id="f-date" name="date" type="date" required>
+        </div>
+        <div class="field">
+          <label for="f-time">Time</label>
+          <select id="f-time" name="time">
+            <option>6:00 pm</option>
+            <option>6:30 pm</option>
+            <option>7:00 pm</option>
+            <option>7:30 pm</option>
+            <option>8:00 pm</option>
+            <option>8:30 pm</option>
+            <option>9:00 pm</option>
+            <option>9:30 pm</option>
+            <option>10:00 pm</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="f-guests">Guests</label>
+          <select id="f-guests" name="guests">
+            <option>2 guests</option>
+            <option>3 guests</option>
+            <option>4 guests</option>
+            <option>5 guests</option>
+            <option>6 guests</option>
+          </select>
+        </div>
+        <button class="btn" type="submit">Reserve a table</button>
+        <p class="form-done">Your table is held. We'll confirm by phone — see you by the fire.</p>
+        <p class="form-note">No deposit needed. We confirm every reservation by phone.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand reveal">
+        <h3>LE' VERE</h3>
+        <p>A fresh, hand-crafted culinary experience combining premium stone-ground bases with vibrant, authentic Indian flavors.</p>
+        <div class="footer-socials" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <a href="https://wa.me/919958136959" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">💬</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">📸</a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Facebook" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">👥</a>
+        </div>
+      </div>
+      <div class="footer-col reveal" data-delay="1">
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="reserve.html">Reserve</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal" data-delay="2">
+        <h4 class="footer-title">Visit Us</h4>
+        <div class="footer-info">
+          <p>F-106, Kamla nagar<br>Agra, Uttar Pradesh India</p>
+          <p style="margin-top: 1rem;">Phone: <a href="tel:+919958136959">+91 99581 36959</a></p>
+          <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--ash);">Hours: Mon - Sun<br>11:00 AM - 11:00 PM</p>
+        </div>
+      </div>
+      <div class="footer-col reveal" data-delay="3">
+        <h4 class="footer-title">Order Online</h4>
+        <div class="footer-delivery">
+          <a href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer" class="footer-delivery-btn footer-delivery-btn--swiggy">Swiggy</a>
+          <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" class="footer-delivery-btn footer-delivery-btn--zomato">Zomato</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom reveal">
+      <p>© 2026 Le' Vere Pizza — Fresh and Authentic.</p>
+      <p style="text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.15em;">Made Fresh Daily</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    /* reservation form submission validation */
+    var form = document.getElementById('bookForm');
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var name = document.getElementById('f-name');
+      var phone = document.getElementById('f-phone');
+      var date = document.getElementById('f-date');
+      var missing = [name, phone, date].filter(function(f){ return !f.value.trim(); });
+      if(missing.length){
+        missing.forEach(function(f){ f.style.borderColor = 'var(--flame)'; });
+        missing[0].focus();
+        return;
+      }
+      form.classList.add('sent');
+    });
+    form.addEventListener('input', function(ev){
+      if(ev.target.matches('input')){ ev.target.style.borderColor = ''; }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Menu — Le' Vere Pizza</title>
+  <meta name="description" content="Explore Le' Vere Pizza's menu — wood-fired pizzas, stuffed garlic breads, gourmet burgers, pasta, and combos.">
+  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    /* ---------- menu layout ---------- */
+    .menu-header {
+      position: relative;
+      text-align: center;
+      padding: 12rem 6vw 6rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .menu-header-media {
+      position: absolute;
+      inset: 0;
+      background: var(--soot);
+      z-index: 1;
+    }
+    .menu-header-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      filter: brightness(.35) saturate(1.1);
+    }
+    .menu-header-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,8,7,.6) 0%, rgba(10,8,7,.85) 100%);
+      z-index: 2;
+    }
+    .menu-header .scene-head {
+      position: relative;
+      z-index: 3;
+    }
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0 4rem;
+      position: sticky;
+      top: 90px;
+      z-index: 10;
+      background: var(--char);
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(237, 227, 210, .05);
+    }
+    .menu-tab-btn {
+      background: var(--soot);
+      border: 1px solid rgba(237, 227, 210, .15);
+      color: var(--ash);
+      padding: .65rem 1.6rem;
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+    .menu-tab-btn:hover,
+    .menu-tab-btn.active {
+      border-color: var(--ember);
+      color: var(--ember);
+      background: var(--smoke);
+    }
+    .menu-section {
+      display: none;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-bottom: 5rem;
+    }
+    .menu-section.active {
+      display: block;
+      animation: fadeIn .6s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* Grid for items */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem 4rem;
+    }
+    @media (max-width: 820px) {
+      .menu-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Food card */
+    .menu-item {
+      display: flex;
+      gap: 1.8rem;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(237,227,210,.05);
+      padding-bottom: 2rem;
+    }
+    .menu-item.reveal .menu-item-img img {
+      opacity: 0;
+      transform: scale(1.2) rotate(3deg);
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      transition: opacity 0.8s cubic-bezier(0.2, 1, 0.2, 1), 
+                  transform 1s cubic-bezier(0.2, 1, 0.2, 1), 
+                  clip-path 0.9s cubic-bezier(0.2, 1, 0.2, 1),
+                  filter 0.8s ease;
+      filter: blur(8px);
+    }
+    .menu-item.reveal.in .menu-item-img img {
+      opacity: 1;
+      transform: scale(1.0) rotate(0deg);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      filter: blur(0px);
+    }
+    .menu-item.reveal .menu-item-title {
+      opacity: 0;
+      transform: translateX(-20px) skewX(-5deg);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .menu-item.reveal.in .menu-item-title {
+      opacity: 1;
+      transform: translateX(0) skewX(0);
+    }
+    .menu-item.reveal .menu-item-desc {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.08s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
+    }
+    .menu-item.reveal.in .menu-item-desc {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .menu-item.reveal .menu-item-sizes {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.16s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
+    }
+    .menu-item.reveal.in .menu-item-sizes {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-item-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--soot);
+      border: 1px solid rgba(237,227,210,.1);
+    }
+    .menu-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .menu-item-info {
+      flex-grow: 1;
+    }
+    .menu-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: .5rem;
+    }
+    .menu-item-title {
+      font-family: var(--serif-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--bone);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    /* veg/non-veg indicator */
+    .indicator-veg {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1px solid #2ecc71;
+      padding: 2px;
+      position: relative;
+    }
+    .indicator-veg::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      background: #2ecc71;
+      border-radius: 50%;
+    }
+    .indicator-spicy::before {
+      content: "🔥";
+      font-size: .9rem;
+    }
+    .menu-item-desc {
+      font-size: .88rem;
+      color: var(--ash);
+      line-height: 1.6;
+      margin-bottom: .6rem;
+    }
+    .menu-item-sizes {
+      font-size: .75rem;
+      color: var(--ash);
+      font-style: italic;
+    }
+    .menu-item-sizes span {
+      color: var(--bone);
+      margin-right: 1rem;
+    }
+
+    /* Combos and Meals cards with animation */
+    .combo-banner {
+      background: linear-gradient(135deg, var(--smoke), var(--soot));
+      border: 1px solid var(--ember);
+      border-radius: 4px;
+      padding: 2.2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      grid-column: span 2;
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .combo-banner.reveal.in {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .combo-banner:hover {
+      border-color: var(--flame);
+      box-shadow: 0 10px 30px rgba(233, 147, 47, 0.15);
+    }
+    .combo-banner h3 {
+      font-family: var(--serif-display);
+      font-size: 1.8rem;
+      color: var(--ember);
+      margin-bottom: .8rem;
+    }
+    .combo-banner p {
+      font-size: .95rem;
+      color: var(--bone);
+      margin-bottom: .4rem;
+    }
+
+    /* Menu Order Hover Overlays */
+    .menu-item-img {
+      position: relative;
+    }
+    .menu-order-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 8, 7, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      padding: 0.5rem;
+      border-radius: inherit;
+    }
+    .menu-item-img:hover .menu-order-overlay,
+    .menu-showcase-image-block:hover .menu-order-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .menu-order-btn {
+      display: block;
+      width: 85%;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      border-radius: 4px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--bone) !important;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .menu-order-btn:hover {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+    .menu-order-btn--swiggy {
+      background: var(--swiggy);
+    }
+    .menu-order-btn--zomato {
+      background: var(--zomato);
+    }
+    .menu-order-btn--reserve {
+      background: linear-gradient(135deg, var(--ember), var(--flame));
+    }
+
+    /* Interactive Showcase Menu Section */
+    .menu-section {
+      display: none;
+      position: relative;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .menu-section.scroll-pinned {
+      height: 350vh;
+    }
+    .menu-section.active {
+      display: block;
+    }
+    .menu-sticky-pin {
+      position: sticky;
+      top: 170px;
+      height: calc(100vh - 170px);
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .menu-showcase-stage {
+      position: absolute;
+      inset: 0;
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 0.6s cubic-bezier(0.2, 1, 0.2, 1), transform 0.6s cubic-bezier(0.2, 1, 0.2, 1);
+      z-index: 5;
+    }
+    .menu-showcase-stage.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+    .menu-showcase-split {
+      display: grid;
+      grid-template-columns: 4.5fr 5.5fr;
+      align-items: center;
+      height: 100%;
+      padding: 0 6vw;
+      gap: 5vw;
+    }
+    .menu-showcase-text-col {
+      position: relative;
+      height: 350px;
+      z-index: 2;
+    }
+    .menu-showcase-text-block {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .menu-showcase-text-block h3 {
+      font-family: var(--serif-display);
+      font-size: 3.2rem;
+      color: var(--bone);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      transform: translateX(-40px) skewX(-10deg);
+      letter-spacing: -0.02em;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .menu-showcase-text-block.active h3 {
+      opacity: 1;
+      transform: translateX(0) skewX(0);
+      letter-spacing: normal;
+    }
+    .menu-showcase-text-block p {
+      color: var(--ash);
+      font-size: 1.25rem;
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.08s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
+    }
+    .menu-showcase-text-block.active p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .menu-showcase-text-block .sizes {
+      font-size: 0.95rem;
+      color: var(--ash);
+      font-style: italic;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.16s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
+    }
+    .menu-showcase-text-block.active .sizes {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .menu-showcase-image-col {
+      position: relative;
+      height: 70vh;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(237,227,210,0.08);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      z-index: 2;
+    }
+    .menu-showcase-image-block {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.15) rotate(2deg);
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      transition: opacity 0.8s cubic-bezier(0.2, 1, 0.2, 1), transform 1s cubic-bezier(0.2, 1, 0.2, 1), clip-path 0.9s cubic-bezier(0.2, 1, 0.2, 1), filter 0.8s ease;
+      filter: blur(8px);
+    }
+    .menu-showcase-image-block.active {
+      opacity: 1;
+      transform: scale(1.0) rotate(0deg);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      filter: blur(0px);
+    }
+    .menu-showcase-image-block img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .menu-bg-glow {
+      position: absolute;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      filter: blur(80px);
+      z-index: 1;
+      pointer-events: none;
+      transition: background 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+    }
+    
+    /* Stage 2 (Grid display) */
+    .menu-grid-stage {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+      pointer-events: none;
+      overflow-y: auto;
+      padding: 40px 6vw 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .menu-grid-stage::-webkit-scrollbar {
+      display: none;
+    }
+    .menu-grid-stage.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    .menu-grid-stage .menu-grid {
+      display: grid !important;
+      max-width: 100% !important;
+      width: 100%;
+    }
+
+    @media (max-width: 820px) {
+      .menu-section {
+        height: auto !important;
+      }
+      .menu-sticky-pin {
+        position: relative !important;
+        height: auto !important;
+        top: 0 !important;
+      }
+      .menu-showcase-stage {
+        display: none !important;
+      }
+      .menu-grid-stage {
+        position: relative !important;
+        inset: auto !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        padding: 2rem 4vw !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bar bar--top"></div>
+  <div class="bar bar--bottom"></div>
+
+  <nav id="nav" aria-label="Main">
+    <a class="nav-brand" href="index.html">LE<em>'</em>&nbsp;VERE</a>
+    <button class="nav-toggle" aria-label="Toggle Navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html" class="active">Menu</a></li>
+      <li><a href="story.html">Our Story</a></li>
+      <li><a href="reserve.html">Reserve</a></li>
+    </ul>
+    <a class="nav-cta" href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer">Order Online</a>
+  </nav>
+
+  <header class="menu-header">
+    <div class="menu-header-media">
+      <video autoplay muted loop playsinline>
+        <source src="https://player.vimeo.com/progressive_redirect/playback/1044867509/rendition/720p/file.mp4?loc=external&log_user=0&signature=e4b28eb656d835a877e20fe8b34e55a241b8a8ae8dece728616d46b2b5c3621a" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-pasta-boiling-in-a-pot-33058-large.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="menu-header-shade"></div>
+    <div class="scene-head">
+      <p class="scene-label">Flavours of Le' Vere</p>
+      <h1 class="scene-title">Our <i>Menu</i></h1>
+    </div>
+  </header>
+
+  <div class="menu-tabs">
+    <button class="menu-tab-btn active" onclick="switchTab('pizzas')">Pizzas</button>
+    <button class="menu-tab-btn" onclick="switchTab('sides')">Garlic Bread & Sides</button>
+    <button class="menu-tab-btn" onclick="switchTab('pasta')">Pasta</button>
+    <button class="menu-tab-btn" onclick="switchTab('burgers')">Burgers & Sandwiches</button>
+    <button class="menu-tab-btn" onclick="switchTab('combos')">Combos & Meals</button>
+  </div>
+
+  <!-- SECTION: PIZZAS -->
+  <section id="pizzas" class="menu-section active">
+    <div class="menu-grid">
+      <!-- Pizza 1 (Paneer Makhani) -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="assets/paneer_makhani_pizza.png" alt="Paneer Makhani Pizza">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Paneer Makhani</h3>
+          </header>
+          <p class="menu-item-desc">Indian makhani sauce base, marinated cubes of paneer, crisp capsicum, onions, coriander, and fresh mozzarella cheese.</p>
+          <p class="menu-item-sizes">Sizes: <span>Regular (7")</span> <span>Large (10")</span></p>
+        </div>
+      </article>
+
+      <!-- Pizza 2 (Pizza Indiana) -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=70" alt="Pizza Indiana">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Pizza Indiana</h3>
+          </header>
+          <p class="menu-item-desc">Freshly rolled sourdough with golden sweet corn and rich Indian spice sauce base, covered in bubbling mozzarella.</p>
+          <p class="menu-item-sizes">Sizes: <span>Regular (7")</span> <span>Large (10")</span></p>
+        </div>
+      </article>
+
+      <!-- Pizza 3 (Spicy Paneer) -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=400&q=70" alt="Spicy Paneer Pizza">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Spicy Paneer <span class="indicator-spicy" title="Spicy"></span></h3>
+          </header>
+          <p class="menu-item-desc">Soft marinated paneer, crisp capsicum, spicy red paprika, and extra mozzarella over our signature tomato base.</p>
+          <p class="menu-item-sizes">Sizes: <span>Regular (7")</span> <span>Large (10")</span></p>
+        </div>
+      </article>
+
+      <!-- Pizza 4 (Farm Villa) -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=70" alt="Farm Villa Pizza">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Farm Villa</h3>
+          </header>
+          <p class="menu-item-desc">A colorful medley of garden fresh onion, capsicum, ripe tomato, and sweet golden corn.</p>
+          <p class="menu-item-sizes">Sizes: <span>Regular (7")</span> <span>Large (10")</span></p>
+        </div>
+      </article>
+
+      <!-- Pizza 5 (Margarita Pizza) -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?auto=format&fit=crop&w=400&q=70" alt="Margarita Pizza">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Margarita Pizza</h3>
+          </header>
+          <p class="menu-item-desc">Simple perfection. Double mozzarella cheese on our slow-fermented crust.</p>
+          <p class="menu-item-sizes">Sizes: <span>Regular (7")</span> <span>Large (10")</span></p>
+        </div>
+      </article>
+
+      <!-- Pizza 6 (Brother's Special Pizza) -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=70" alt="Brother's Special Pizza">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Brother's Special</h3>
+          </header>
+          <p class="menu-item-desc">Our loaded masterpiece. Black olives, onion, capsicum, mushroom, tomato, corn, jalapenos, and extra cheese.</p>
+          <p class="menu-item-sizes">Sizes: <span>Regular (7")</span> <span>Large (10")</span></p>
+        </div>
+      </article>
+
+      <!-- Pizza 7 (Single Topping Pizza List) -->
+      <div style="grid-column: 1/-1; border-top: 1px solid rgba(237,227,210,.1); padding-top: 3rem; margin-top: 2rem;">
+        <h3 style="font-family: var(--serif-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--ember); text-align: center;">Single Topping Pizzas</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 3px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Cheese Onion</h4>
+            <p style="color: var(--ash); font-size: .8rem;">6-inch / 7-inch sizes available</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 3px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Cheese Tomato</h4>
+            <p style="color: var(--ash); font-size: .8rem;">6-inch / 7-inch sizes available</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 3px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Cheese Capsicum</h4>
+            <p style="color: var(--ash); font-size: .8rem;">6-inch / 7-inch sizes available</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 3px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Cheese Corn</h4>
+            <p style="color: var(--ash); font-size: .8rem;">6-inch / 7-inch sizes available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: SIDES -->
+  <section id="sides" class="menu-section">
+    <div class="menu-grid">
+      <!-- Stuffed Garlic Bread -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="assets/stuffed_garlic_bread.png" alt="Stuffed Garlic Bread">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Cheese Stuffed Garlic Bread</h3>
+          </header>
+          <p class="menu-item-desc">Warm, wood-roasted flatbread stuffed with mozzarella cheese, herbs, and garlic butter. Served with a delicious dip.</p>
+        </div>
+      </article>
+
+      <!-- Corn & Jalapeno Garlic Bread -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="assets/stuffed_garlic_bread.png" alt="Corn and Jalapeno Garlic Bread" style="transform: rotate(90deg);">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Corn & Jalapeno Garlic Bread <span class="indicator-spicy"></span></h3>
+          </header>
+          <p class="menu-item-desc">Freshly baked garlic bread pockets packed with golden corn, spicy sliced jalapenos, and mozzarella cheese.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SECTION: PASTA -->
+  <section id="pasta" class="menu-section">
+    <div class="menu-grid">
+      <!-- Pasta Pink -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="assets/pink_pasta.png" alt="Penne Pasta in Pink Sauce">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Pasta In Pink Sauce</h3>
+          </header>
+          <p class="menu-item-desc">Penne pasta tossed in a delicious blend of robust red marinara and creamy white sauce, mixed with capsicum, onion, and fresh sweet corn.</p>
+        </div>
+      </article>
+
+      <!-- Pasta Red -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=400&q=70" alt="Penne Pasta in Red Sauce">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Pasta In Red Sauce</h3>
+          </header>
+          <p class="menu-item-desc">Penne pasta in a spicy tomato-garlic marinara sauce with crispy vegetables, garden herbs, and olive oil.</p>
+        </div>
+      </article>
+
+      <!-- Pasta White -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1645112411341-6c4fd023714a?auto=format&fit=crop&w=400&q=70" alt="Penne Pasta in White Sauce">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Pasta In White Sauce</h3>
+          </header>
+          <p class="menu-item-desc">Rich, creamy Béchamel sauce, penne pasta, loaded with cheese, broccoli, sweet corn, and cracked black pepper.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SECTION: BURGERS & SANDWICHES -->
+  <section id="burgers" class="menu-section">
+    <div class="menu-grid">
+      <!-- Paneer Burger -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="assets/paneer_burger.png" alt="Paneer Burger">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Paneer Burger</h3>
+          </header>
+          <p class="menu-item-desc">Gourmet grilled paneer slab patty, melting cheddar, sliced onion, tomato, fresh lettuce, and mint mayonnaise.</p>
+        </div>
+      </article>
+
+      <!-- Aloo Tikki Burger -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=70" alt="Aloo Tikki Burger">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Aloo Tikki Burger</h3>
+          </header>
+          <p class="menu-item-desc">A golden crispy potato patty infused with local spices, topped with onions, tomatoes, and spicy burger sauce.</p>
+        </div>
+      </article>
+
+      <!-- Cheese Burger -->
+      <article class="menu-item">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=70" alt="Cheese Burger">
+        </div>
+        <div class="menu-item-info">
+          <header class="menu-item-header">
+            <h3 class="menu-item-title"><span class="indicator-veg"></span> Cheese Burger</h3>
+          </header>
+          <p class="menu-item-desc">Crispy vegetable patty with double cheddar cheese slices, pickled gherkins, onions, and classic burger spread.</p>
+        </div>
+      </article>
+
+      <!-- Sandwich Block -->
+      <div style="grid-column: 1/-1; border-top: 1px solid rgba(237,227,210,.1); padding-top: 3rem; margin-top: 2rem;">
+        <h3 style="font-family: var(--serif-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--ember); text-align: center;">Gourmet Sandwiches</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+          <div style="background: var(--soot); padding: 1.8rem; border-radius: 4px;">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Veg Sandwich</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: 1rem;">Crisp vegetables with mint chutney and spices.</p>
+            <p style="color: var(--ember);">Plain / Grilled options available</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.8rem; border-radius: 4px;">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Cheese Sandwich</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: 1rem;">Melted mozzarella and cheddar slices between buttered bread.</p>
+            <p style="color: var(--ember);">Plain / Grilled options available</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.8rem; border-radius: 4px;">
+            <h4 style="font-family: var(--serif-display); margin-bottom: .5rem;"><span class="indicator-veg"></span> Paneer Sandwich</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: 1rem;">Spiced crumbled paneer with onions, capsicum, and coriander.</p>
+            <p style="color: var(--ember);">Plain / Grilled options available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: COMBOS -->
+  <section id="combos" class="menu-section">
+    <div class="menu-grid">
+      <!-- Combo Single -->
+      <div class="combo-banner reveal">
+        <h3>Combo Single</h3>
+        <p>Your choice of any 6-inch Single Topping Pizza</p>
+        <p style="color: var(--ash); font-size: 0.85rem;">Choose from: Cheese Onion, Cheese Corn, Cheese Capsicum, Cheese Tomato</p>
+      </div>
+
+      <!-- Combo Double -->
+      <div class="combo-banner reveal" style="border-color: var(--flame);">
+        <h3 style="color: var(--flame);">Combo Double</h3>
+        <p>Perfect for sharing. Two 6-inch customized pizzas</p>
+        <p style="color: var(--ash); font-size: 0.85rem;">Choose from: Cheese Onion & Capsicum, Cheese Tomato & Capsicum, Cheese Onion & Paneer, Cheese Jalapeno & Corn</p>
+      </div>
+
+      <!-- Meal for One List -->
+      <div style="grid-column: 1/-1; border-top: 1px solid rgba(237,227,210,.1); padding-top: 3rem;">
+        <h3 style="font-family: var(--serif-display); font-size: 1.8rem; margin-bottom: 2rem; color: var(--ember); text-align: center;">Meal For One Deals</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 2px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); font-size: 1.1rem; margin-bottom: .5rem;">Onion Pizza + Coke</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: .8rem;">6-inch Onion pizza with a chilled 250ml Coke bottle.</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 2px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); font-size: 1.1rem; margin-bottom: .5rem;">Corn Pizza + Coke</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: .8rem;">6-inch Corn pizza with a chilled 250ml Coke bottle.</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 2px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); font-size: 1.1rem; margin-bottom: .5rem;">Farm Villa Pizza + Coke</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: .8rem;">7-inch loaded Farm Villa pizza and a 250ml Coke bottle.</p>
+          </div>
+          <div style="background: var(--soot); padding: 1.5rem; border-left: 2px solid var(--ember);">
+            <h4 style="font-family: var(--serif-display); font-size: 1.1rem; margin-bottom: .5rem;">Margarita Pizza + Coke</h4>
+            <p style="color: var(--ash); font-size: .88rem; margin-bottom: .8rem;">7-inch classic Margarita pizza and a 250ml Coke bottle.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dine-in Reserve Seat CTA banner -->
+      <div class="combo-banner reveal" style="grid-column: 1/-1; background: linear-gradient(135deg, var(--soot), var(--smoke)); border-color: var(--ember); margin-top: 3rem; margin-bottom: 0;">
+        <h3>Dine-In Experiences</h3>
+        <p style="margin-bottom: 1.5rem;">Planning a gathering or special dinner? Book your private table in advance.</p>
+        <a href="reserve.html" class="btn btn--fire" style="display: inline-block;">Reserve Your Seat</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand reveal">
+        <h3>LE' VERE</h3>
+        <p>A fresh, hand-crafted culinary experience combining premium stone-ground bases with vibrant, authentic Indian flavors.</p>
+        <div class="footer-socials" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <a href="https://wa.me/919958136959" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">💬</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">📸</a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Facebook" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">👥</a>
+        </div>
+      </div>
+      <div class="footer-col reveal" data-delay="1">
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="reserve.html">Reserve</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal" data-delay="2">
+        <h4 class="footer-title">Visit Us</h4>
+        <div class="footer-info">
+          <p>F-106, Kamla nagar<br>Agra, Uttar Pradesh India</p>
+          <p style="margin-top: 1rem;">Phone: <a href="tel:+919958136959">+91 99581 36959</a></p>
+          <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--ash);">Hours: Mon - Sun<br>11:00 AM - 11:00 PM</p>
+        </div>
+      </div>
+      <div class="footer-col reveal" data-delay="3">
+        <h4 class="footer-title">Order Online</h4>
+        <div class="footer-delivery">
+          <a href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer" class="footer-delivery-btn footer-delivery-btn--swiggy">Swiggy</a>
+          <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" class="footer-delivery-btn footer-delivery-btn--zomato">Zomato</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom reveal">
+      <p>© 2026 Le' Vere Pizza — Fresh and Authentic.</p>
+      <p style="text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.15em;">Made Fresh Daily</p>
+    </div>
+  </footer>
+
+  <script>
+    function initMenuInteractiveShowcase() {
+      // Decorate combo banners with reveal class so they animate nicely
+      document.querySelectorAll('.combo-banner').forEach(function(item) {
+        item.classList.add('reveal');
+      });
+
+      var sections = document.querySelectorAll('.menu-section');
+      sections.forEach(function(section) {
+        var items = section.querySelectorAll('.menu-item');
+        if (items.length === 0) return;
+
+        // Add scroll-pinned class only to sections that have items to slide
+        section.classList.add('scroll-pinned');
+
+        var originalGrid = section.querySelector('.menu-grid');
+        var originalBanner = section.querySelector('.combo-banner');
+        
+        var pin = document.createElement('div');
+        pin.className = 'menu-sticky-pin';
+
+        var glow = document.createElement('div');
+        glow.className = 'menu-bg-glow';
+        glow.id = 'glow-' + section.id;
+        pin.appendChild(glow);
+
+        var showcaseStage = document.createElement('div');
+        showcaseStage.className = 'menu-showcase-stage';
+        
+        var textCol = document.createElement('div');
+        textCol.className = 'menu-showcase-text-col';
+        
+        var imgCol = document.createElement('div');
+        imgCol.className = 'menu-showcase-image-col';
+        
+        items.forEach(function(item, index) {
+          var title = item.querySelector('.menu-item-title').innerHTML;
+          var desc = item.querySelector('.menu-item-desc').innerHTML;
+          var sizesEl = item.querySelector('.menu-item-sizes');
+          var sizes = sizesEl ? sizesEl.innerHTML : '';
+          var imgSrc = item.querySelector('.menu-item-img img').src;
+
+          var textBlock = document.createElement('div');
+          textBlock.className = 'menu-showcase-text-block' + (index === 0 ? ' active' : '');
+          textBlock.setAttribute('data-index', index);
+          textBlock.innerHTML = '<h3>' + title + '</h3><p>' + desc + '</p>' + (sizes ? '<p class="sizes">Sizes: ' + sizes + '</p>' : '');
+          textCol.appendChild(textBlock);
+
+          var imgBlock = document.createElement('div');
+          imgBlock.className = 'menu-showcase-image-block' + (index === 0 ? ' active' : '');
+          imgBlock.setAttribute('data-index', index);
+          // Large showcase image contains order overlay
+          imgBlock.innerHTML = `
+            <img src="${imgSrc}" alt="Showcase Image">
+            <div class="menu-order-overlay">
+              <a href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer" class="menu-order-btn menu-order-btn--swiggy" style="padding:0.5rem 1rem; font-size:0.8rem; width:65%;">Swiggy</a>
+              <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" class="menu-order-btn menu-order-btn--zomato" style="padding:0.5rem 1rem; font-size:0.8rem; width:65%; margin-top:0.3rem;">Zomato</a>
+              <a href="reserve.html" class="menu-order-btn menu-order-btn--reserve" style="padding:0.5rem 1rem; font-size:0.8rem; width:65%; margin-top:0.3rem;">Reserve Table</a>
+            </div>
+          `;
+          imgCol.appendChild(imgBlock);
+
+          // Grid item images also get order overlay
+          var gridImgContainer = item.querySelector('.menu-item-img');
+          if (gridImgContainer && !gridImgContainer.querySelector('.menu-order-overlay')) {
+            var overlay = document.createElement('div');
+            overlay.className = 'menu-order-overlay';
+            overlay.innerHTML = `
+              <a href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer" class="menu-order-btn menu-order-btn--swiggy">Swiggy</a>
+              <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" class="menu-order-btn menu-order-btn--zomato">Zomato</a>
+              <a href="reserve.html" class="menu-order-btn menu-order-btn--reserve">Reserve Table</a>
+            `;
+            gridImgContainer.appendChild(overlay);
+          }
+        });
+
+        var split = document.createElement('div');
+        split.className = 'menu-showcase-split';
+        split.appendChild(textCol);
+        split.appendChild(imgCol);
+        showcaseStage.appendChild(split);
+        pin.appendChild(showcaseStage);
+
+        var gridStage = document.createElement('div');
+        gridStage.className = 'menu-grid-stage';
+        
+        if (originalGrid) {
+          gridStage.appendChild(originalGrid);
+        }
+        if (originalBanner) {
+          gridStage.appendChild(originalBanner);
+        }
+        pin.appendChild(gridStage);
+
+        section.innerHTML = '';
+        section.appendChild(pin);
+      });
+
+      window.addEventListener('scroll', handleMenuScroll, {passive: true});
+      handleMenuScroll();
+    }
+
+    function handleMenuScroll() {
+      var activeSection = document.querySelector('.menu-section.active');
+      if (!activeSection) return;
+
+      var pin = activeSection.querySelector('.menu-sticky-pin');
+      if (!pin) return;
+
+      var rect = activeSection.getBoundingClientRect();
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      
+      var sectionTop = scrollTop + rect.top;
+      var sectionHeight = activeSection.offsetHeight;
+      var viewportHeight = window.innerHeight;
+      
+      var scrollStart = sectionTop;
+      var scrollEnd = sectionTop + sectionHeight - viewportHeight;
+      
+      if (scrollTop < scrollStart) {
+        updateMenuShowcase(activeSection, 0, false);
+      } else if (scrollTop >= scrollStart && scrollTop <= scrollEnd) {
+        var ratio = (scrollTop - scrollStart) / (scrollEnd - scrollStart);
+        
+        if (ratio <= 0.75) {
+          var showcaseRatio = ratio / 0.75;
+          var itemsCount = activeSection.querySelectorAll('.menu-showcase-text-block').length;
+          var index = Math.min(itemsCount - 1, Math.floor(showcaseRatio * itemsCount));
+          updateMenuShowcase(activeSection, index, false);
+        } else {
+          updateMenuShowcase(activeSection, 0, true);
+        }
+      } else {
+        updateMenuShowcase(activeSection, 0, true);
+      }
+    }
+
+    function updateMenuShowcase(section, index, showGrid) {
+      var showcase = section.querySelector('.menu-showcase-stage');
+      var gridStage = section.querySelector('.menu-grid-stage');
+      var glow = section.querySelector('.menu-bg-glow');
+      
+      if (!showcase || !gridStage) return;
+
+      if (showGrid) {
+        showcase.classList.add('hidden');
+        gridStage.classList.add('active');
+        if (glow) glow.style.opacity = '0';
+      } else {
+        showcase.classList.remove('hidden');
+        gridStage.classList.remove('active');
+        if (glow) glow.style.opacity = '1';
+
+        var textBlocks = showcase.querySelectorAll('.menu-showcase-text-block');
+        var imageBlocks = showcase.querySelectorAll('.menu-showcase-image-block');
+
+        textBlocks.forEach(function(tb, i) {
+          tb.classList.toggle('active', i === index);
+        });
+        imageBlocks.forEach(function(ib, i) {
+          ib.classList.toggle('active', i === index);
+        });
+
+        if (glow) {
+          var glowColors = [
+            'radial-gradient(circle, rgba(233,147,47,0.12) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(241,196,15,0.12) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(231,76,60,0.12) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(46,204,113,0.12) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(52,152,219,0.12) 0%, transparent 70%)'
+          ];
+          var colorIdx = index % glowColors.length;
+          glow.style.background = glowColors[colorIdx];
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initMenuInteractiveShowcase);
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      initMenuInteractiveShowcase();
+    }
+  </script>
+  <script src="app.js?v=2"></script>
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.menu-section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.querySelectorAll('.menu-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      const targetSec = document.getElementById(tabId);
+      if (targetSec) targetSec.classList.add('active');
+
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
+
+      // Automatically reset scroll view to start of showcase
+      const tabs = document.querySelector('.menu-tabs');
+      if (tabs) {
+        var rect = tabs.getBoundingClientRect();
+        window.scrollTo({
+          top: window.scrollY + rect.top - 80,
+          behavior: 'smooth'
+        });
+      }
+
+      // Re-trigger scroll logic
+      setTimeout(handleMenuScroll, 100);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Story — Le' Vere Pizza</title>
+  <meta name="description" content="Discover the story behind Le' Vere Pizza's wood-fired craft and Indian flavors.">
+  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    /* ---------- story page specific style ---------- */
+    .story-header {
+      position: relative;
+      text-align: center;
+      padding: 12rem 6vw 6rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .story-header-media {
+      position: absolute;
+      inset: 0;
+      background: var(--soot);
+      z-index: 1;
+    }
+    .story-header-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      filter: brightness(.35) saturate(1.1);
+    }
+    .story-header-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,8,7,.6) 0%, rgba(10,8,7,.85) 100%);
+      z-index: 2;
+    }
+    .story-header .scene-head {
+      position: relative;
+      z-index: 3;
+    }
+    .story-intro {
+      max-width: 800px;
+      margin: 0 auto 5rem;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: var(--ash);
+    }
+    .story-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 5rem;
+      align-items: center;
+      padding-bottom: 6rem;
+    }
+    .story-frame {
+      position: relative;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: var(--smoke);
+      border-radius: 12px;
+      border: 1px solid rgba(237,227,210,0.08);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .story-frame img {
+      width: 100%;
+      height: 118%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(.75) saturate(1.05) blur(8px);
+      opacity: 0;
+      transform: scale(1.15) rotate(2deg);
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+      transition: opacity 1s cubic-bezier(0.2, 1, 0.2, 1), 
+                  transform 1.2s cubic-bezier(0.2, 1, 0.2, 1), 
+                  clip-path 1.1s cubic-bezier(0.2, 1, 0.2, 1),
+                  filter 1s ease;
+    }
+    .story-frame.in img {
+      opacity: 1;
+      transform: scale(1.0) rotate(0deg);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      filter: brightness(.75) saturate(1.05) blur(0px);
+    }
+    .story-copy p {
+      color: var(--ash);
+      margin-bottom: 1.4rem;
+      max-width: 56ch;
+    }
+    .story-copy p strong {
+      color: var(--bone);
+      font-weight: 400;
+    }
+    .story-voice {
+      font-family: var(--serif-voice);
+      font-style: italic;
+      font-size: 1.65rem;
+      line-height: 1.6;
+      color: var(--bone);
+      margin: 2.5rem 0 1.8rem;
+      border-left: 3px solid var(--ember);
+      padding-left: 2rem;
+      background: linear-gradient(90deg, rgba(233,147,47,0.04), transparent);
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+    }
+    .story-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: var(--soot);
+      border: 1px solid rgba(237,227,210,0.08);
+      padding: 1.2rem 2rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      flex-grow: 1;
+      min-width: 150px;
+    }
+    .stat:hover {
+      border-color: var(--ember);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(233,147,47,0.08);
+    }
+    .stat b {
+      display: block;
+      font-family: var(--serif-display);
+      font-weight: 500;
+      font-size: 2rem;
+      color: var(--ember);
+    }
+    .stat span {
+      font-size: .68rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    @media (max-width: 900px) {
+      .story-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    /* Kitchen gallery stills */
+    .stills-gallery {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      padding-top: 4rem;
+    }
+    .still-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      border-radius: 4px;
+      background: var(--soot);
+      border: 1px solid rgba(237,227,210,.05);
+    }
+    .still-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(.7);
+      transition: transform .8s ease, filter .5s ease;
+    }
+    .still-card:hover img {
+      transform: scale(1.05);
+      filter: brightness(.9);
+    }
+    .still-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1.2rem;
+      font-size: .68rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--bone);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bar bar--top"></div>
+  <div class="bar bar--bottom"></div>
+
+  <nav id="nav" aria-label="Main">
+    <a class="nav-brand" href="index.html">LE<em>'</em>&nbsp;VERE</a>
+    <button class="nav-toggle" aria-label="Toggle Navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="story.html" class="active">Our Story</a></li>
+      <li><a href="reserve.html">Reserve</a></li>
+    </ul>
+    <a class="nav-cta" href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer">Order Online</a>
+  </nav>
+
+  <header class="story-header">
+    <div class="story-header-media">
+      <video autoplay muted loop playsinline>
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-chef-preparing-a-fresh-pizza-33051-large.mp4" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-kneading-pizza-dough-on-a-floured-surface-33050-large.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="story-header-shade"></div>
+    <div class="scene-head">
+      <p class="scene-label">Our Heritage</p>
+      <h1 class="scene-title">The Story of <i>Le' Vere</i></h1>
+    </div>
+  </header>
+
+  <p class="story-intro reveal">
+    We didn't set out to make ordinary pizza. We wanted to tell a story where traditional wood-fired cooking matches the bold, aromatic, and rich palette of Indian cuisine.
+  </p>
+
+  <section style="padding: 2rem 6vw;">
+    <div class="story-grid">
+      <figure class="story-frame reveal">
+        <img data-parallax-img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=70" alt="Wood-fired oven burning brightly" loading="lazy">
+      </figure>
+      <div class="story-copy">
+        <h2 style="font-family: var(--serif-display); font-size: 2rem; margin-bottom: 1.5rem; color: var(--ember);" class="reveal">The Fire & Craft</h2>
+        <p class="reveal">Every evening, the oven is fired up with hand-selected local logs. Oak for consistent, clean heat; a touch of cherrywood for a subtle sweet smoke. By dinner, the oven floor reaches a scorching <strong>450 degrees Celsius</strong>.</p>
+        <p class="reveal" data-delay="1">Our base is the hero of the kitchen. Made using stone-ground flour, it is prepared fresh daily. This fresh preparation gives it a light, crispy crust that pairs beautifully with our rich, spiced toppings.</p>
+        <blockquote class="story-voice reveal" data-delay="2">"We do not compromise on the base. We prepare it fresh daily, then bake it in ninety seconds."</blockquote>
+        <div class="story-stats reveal" data-delay="3">
+          <div class="stat"><b>Daily</b><span>Fresh prep</span></div>
+          <div class="stat"><b>450°C</b><span>Oven floor</span></div>
+          <div class="stat"><b>90s</b><span>In the fire</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--soot);">
+    <div class="scene-head reveal" style="text-align: center;">
+      <p class="scene-label">The Kitchen</p>
+      <h2 class="scene-title">Frames from <i>the Oven</i></h2>
+    </div>
+
+    <div class="stills-gallery">
+      <div class="still-card reveal">
+        <img src="assets/paneer_makhani_pizza.png" alt="Wood fired Paneer Pizza">
+        <span class="still-label">Still 01 — Paneer Makhani</span>
+      </div>
+      <div class="still-card reveal" data-delay="1">
+        <img src="assets/stuffed_garlic_bread.png" alt="Stretching stuffed garlic bread">
+        <span class="still-label">Still 02 — Stuffed Garlic Bread</span>
+      </div>
+      <div class="still-card reveal" data-delay="2">
+        <img src="assets/paneer_burger.png" alt="Plated paneer burger">
+        <span class="still-label">Still 03 — Gourmet Burger</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand reveal">
+        <h3>LE' VERE</h3>
+        <p>A fresh, hand-crafted culinary experience combining premium stone-ground bases with vibrant, authentic Indian flavors.</p>
+        <div class="footer-socials" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <a href="https://wa.me/919958136959" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">💬</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">📸</a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Facebook" style="color: var(--bone); border: 1px solid rgba(237,227,210,0.15); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease;">👥</a>
+        </div>
+      </div>
+      <div class="footer-col reveal" data-delay="1">
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="reserve.html">Reserve</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal" data-delay="2">
+        <h4 class="footer-title">Visit Us</h4>
+        <div class="footer-info">
+          <p>F-106, Kamla nagar<br>Agra, Uttar Pradesh India</p>
+          <p style="margin-top: 1rem;">Phone: <a href="tel:+919958136959">+91 99581 36959</a></p>
+          <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--ash);">Hours: Mon - Sun<br>11:00 AM - 11:00 PM</p>
+        </div>
+      </div>
+      <div class="footer-col reveal" data-delay="3">
+        <h4 class="footer-title">Order Online</h4>
+        <div class="footer-delivery">
+          <a href="https://www.swiggy.com" target="_blank" rel="noopener noreferrer" class="footer-delivery-btn footer-delivery-btn--swiggy">Swiggy</a>
+          <a href="https://www.zomato.com" target="_blank" rel="noopener noreferrer" class="footer-delivery-btn footer-delivery-btn--zomato">Zomato</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom reveal">
+      <p>© 2026 Le' Vere Pizza — Fresh and Authentic.</p>
+      <p style="text-transform: uppercase; font-size: 0.62rem; letter-spacing: 0.15em;">Made Fresh Daily</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
